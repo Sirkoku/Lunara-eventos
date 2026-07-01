@@ -1,0 +1,18 @@
+@tailwind  base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #DCCFC0;
+  color: #2D2D2D;
+}
+
+h1,
+h2,
+h3,
+.hero-title,
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+}

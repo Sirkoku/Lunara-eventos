@@ -1,0 +1,182 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.header {
+  background: #3C3489;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.header nav {
+  display: flex;
+  gap: 8px;
+}
+
+.header nav button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.header nav button.activo {
+  background: white;
+  color: #3C3489;
+  font-weight: 500;
+}
+
+.contenido {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fecha-seleccionada {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+.main {
+  flex: 1;
+}
+
+.main h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #3C3489;
+}
+
+/* Disponibilidad */
+.turnos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.turno-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.turno-nombre {
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.turno-estado {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Reservas */
+.reservas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reserva-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reserva-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reserva-fecha {
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.reserva-estado {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.reserva-cliente {
+  display: flex;
+  gap: 1rem;
+  font-size: 13px;
+  color: #555;
+}
+
+.reserva-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.reserva-acciones button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #3C3489;
+  background: transparent;
+  color: #3C3489;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.reserva-acciones button:hover {
+  background: #3C3489;
+  color: white;
+}
+
+.btn-cancelar {
+  border-color: #D85A30 !important;
+  color: #D85A30 !important;
+}
+
+.btn-cancelar:hover {
+  background: #D85A30 !important;
+  color: white !important;
+}
