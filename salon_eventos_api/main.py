@@ -1,8 +1,15 @@
 from fastapi import FastAPI
+from routes.whatsapp import router as whatsapp_router
 import psycopg2
 from pydantic import BaseModel
+from routes.webhook import router as webhook_router
 
 app = FastAPI()
+
+app.include_router(whatsapp_router)
+app.include_router(webhook_router)
+
+
 TURNOS_VALIDOS = ["manana","mediodia","tarde"]
 ESTADOS_VALIDOS= ["pendiente_sena","senado","pagado"]
 
@@ -393,7 +400,7 @@ def cancelar_reserva(id: int):
     
     
     
-from ia import interpretar_mensaje
+from services.ia import interpretar_mensaje
 
 class MensajeRequest(BaseModel):
     mensaje: str
