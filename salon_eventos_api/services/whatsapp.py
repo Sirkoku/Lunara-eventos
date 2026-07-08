@@ -1,6 +1,5 @@
 # Logica de meta 
 
-
 import os
 import requests
 from dotenv import load_dotenv
@@ -11,7 +10,7 @@ load_dotenv()
 ACCESS_TOKEN = os.getenv("META_ACCESS_TOKEN")
 PHONE_NUMBER_ID = os.getenv("META_PHONE_NUMBER_ID")
 
-print("TOKEN:", ACCESS_TOKEN)
+# print("TOKEN:", ACCESS_TOKEN)
 print("PHONE_ID:", PHONE_NUMBER_ID)
 
 URL = f"https://graph.facebook.com/v25.0/{PHONE_NUMBER_ID}/messages"

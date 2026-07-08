@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Request
 import os
 from dotenv import load_dotenv
+from services.chatbot import procesar_mensaje
+
 
 load_dotenv()
-
-router = APIRouter()
+router= APIRouter()
 
 
 @router.get("/webhook")
@@ -32,7 +33,8 @@ async def recibir_webhook(request: Request):
 
             numero = value["messages"][0]["from"]
             mensaje = value["messages"][0]["text"]["body"]
-
+            procesar_mensaje(numero, mensaje)                                                     
+            
             print(f"📱 {numero}")
             print(f"💬 {mensaje}")
 
