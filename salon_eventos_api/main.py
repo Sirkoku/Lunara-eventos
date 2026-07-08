@@ -3,12 +3,13 @@ from routes.whatsapp import router as whatsapp_router
 import psycopg2
 from pydantic import BaseModel
 from routes.webhook import router as webhook_router
+from routes.disponibilidad import router as disponibilidad_router
 
 app = FastAPI()
 
 app.include_router(whatsapp_router)
 app.include_router(webhook_router)
-
+app.include_router(disponibilidad_router)
 
 TURNOS_VALIDOS = ["manana","mediodia","tarde"]
 ESTADOS_VALIDOS= ["pendiente_sena","senado","pagado"]
@@ -38,42 +39,7 @@ def get_conexion():
 def health():
     return {"estado": "ok", "mensaje": "Servidor funcionando 🚀"}
 
-# Disponibilidad por fecha
-@app.get("/disponibilidad")
-def disponibilidad(fecha: str):
-    try:
-        conexion = get_conexion()
-        cursor = conexion.cursor()
 
-        cursor.execute("""
-            SELECT turno, estado
-            FROM public.reservas
-            WHERE fecha = %s
-        """, (fecha,))
-
-        resultados = cursor.fetchall()
-        turnos = ["manana", "mediodia", "tarde"]
-
-        ocupados = [
-            r[0] for r in resultados
-            if r[1] in ["pendiente_sena", "senado", "pagado"]
-        ]
-
-        disponibilidad = {}
-        for turno in turnos:
-            if turno in ocupados:
-                disponibilidad[turno] = "ocupado"
-            else:
-                disponibilidad[turno] = "libre"
-
-        cursor.close()
-        conexion.close()
-
-        return {"fecha": fecha, "disponibilidad": disponibilidad}
-
-    except Exception as e:
-        return {"error": str(e)}
-    
     # Modelo de datos para la reserva
 class ReservaRequest(BaseModel):
     fecha: str
