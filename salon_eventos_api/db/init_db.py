@@ -11,7 +11,8 @@ def create_tables():
             id SERIAL PRIMARY KEY,
             nombre VARCHAR(100),
             telefono VARCHAR(20) UNIQUE NOT NULL,
-            fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            email VARCHAR(100),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
 

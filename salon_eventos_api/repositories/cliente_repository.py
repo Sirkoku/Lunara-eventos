@@ -16,17 +16,17 @@ def get_cliente_by_telefono(telefono):
     return cliente
 
 
-def crear_cliente(nombre, telefono):
+def crear_cliente(nombre, telefono, email=None):
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute(
         """
-        INSERT INTO clientes (nombre, telefono)
+        INSERT INTO clientes (nombre, telefono, email)
         VALUES (%s, %s)
         RETURNING *
         """,
-        (nombre, telefono)
+        (nombre, telefono, email)
     )
 
     cliente = cur.fetchone()

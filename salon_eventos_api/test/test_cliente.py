@@ -10,7 +10,9 @@ cliente = get_cliente_by_telefono(telefono)
 
 if not cliente:
     print("No existe, creando cliente...")
-    cliente = crear_cliente("Test User", telefono)
+    cliente = crear_cliente("Cliente Test",
+    "54922XXXXXXXX",
+    "test@test.com")
 else:
     print("Cliente ya existe")
 

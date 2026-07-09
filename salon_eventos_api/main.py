@@ -4,7 +4,7 @@ import psycopg2
 from pydantic import BaseModel
 from routes.webhook import router as webhook_router
 from routes.disponibilidad import router as disponibilidad_router
-
+from models.reserva_models import ReservaRequest
 app = FastAPI()
 
 app.include_router(whatsapp_router)
@@ -39,14 +39,6 @@ def get_conexion():
 def health():
     return {"estado": "ok", "mensaje": "Servidor funcionando 🚀"}
 
-
-    # Modelo de datos para la reserva
-class ReservaRequest(BaseModel):
-    fecha: str
-    turno: str
-    nombre_cliente: str
-    telefono: str
-    email: str = None  
 
 @app.post("/reservar")
 def reservar(data: ReservaRequest):
