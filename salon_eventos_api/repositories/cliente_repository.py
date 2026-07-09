@@ -23,7 +23,7 @@ def crear_cliente(nombre, telefono, email=None):
     cur.execute(
         """
         INSERT INTO clientes (nombre, telefono, email)
-        VALUES (%s, %s)
+        VALUES (%s, %s, %s)
         RETURNING *
         """,
         (nombre, telefono, email)
@@ -36,3 +36,16 @@ def crear_cliente(nombre, telefono, email=None):
     conn.close()
 
     return cliente
+def obtener_clientes():
+    conn = get_connection()
+    cur = conn.cursor()
+    
+    cur.execute("""
+                SELECT id,nombre,telefono,email
+                FROM clientes
+                ORDER BY nombre
+            """)
+    resultados= cur.fetchall()
+    cur.close()
+    conn.close()
+    return resultados

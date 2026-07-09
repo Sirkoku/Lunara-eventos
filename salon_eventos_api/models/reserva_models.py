@@ -7,3 +7,7 @@ class ReservaRequest(BaseModel):
     nombre_cliente: str
     telefono: str
     email: str = None  
+    
+    
+class ConfirmarSenaRequest(BaseModel):
+        reserva_id: int
