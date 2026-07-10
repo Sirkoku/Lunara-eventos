@@ -11,3 +11,9 @@ class ReservaRequest(BaseModel):
     
 class ConfirmarSenaRequest(BaseModel):
         reserva_id: int
+        
+class EditarReservaRequest(BaseModel):
+    id: int
+    fecha: str | None = None
+    turno: str | None = None
+    estado: str | None = None

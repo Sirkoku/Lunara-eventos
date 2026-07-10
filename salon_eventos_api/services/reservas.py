@@ -3,23 +3,22 @@ from repositories.cliente_repository import (
     crear_cliente
 )
 
-from repositories.reserva_repository import (
-    obtener_reserva_por_fecha_y_turno,
-    crear_reserva 
-    )
+from models.reserva_models import (
+    ReservaRequest,
+    ConfirmarSenaRequest,
+    EditarReservaRequest
+)
 
 from repositories.reserva_repository import (
     obtener_reserva_por_fecha_y_turno,
     crear_reserva,
-    obtener_toda_las_reservas
+    obtener_todas_las_reservas,
+    confirmar_sena,
+    confirmar_pago,
+    cancelar_reserva,
+    obtener_reserva_por_id,
+    editar_reserva
 )
-
-from models.reserva_models import (
-    ReservaRequest,
-    ConfirmarSenaRequest
-)
-
-from repositories.reserva_repository import confirmar_sena
 
 
 def reservar(data: ReservaRequest):
@@ -62,7 +61,7 @@ def reservar(data: ReservaRequest):
     }
 
 def listar_reservas():
-    resultado = obtener_toda_las_reservas()
+    resultado = obtener_todas_las_reservas()
     
     reservas = []
     
@@ -86,4 +85,41 @@ def confirmar_sena_reserva(data: ConfirmarSenaRequest):
     
     return{
         "mensaje":"Seña confirmada"
+    }
+    
+def confirmar_pago_reserva(data: ConfirmarSenaRequest):
+    confirmar_pago(data.reserva_id)
+    
+    return{
+        "mensaje":"Pago confirmado"
+    }
+
+def eliminar_reserva(reserva_id):
+    cancelar_reserva(reserva_id)
+    
+    return{
+        "mensaje":"Reserva cancelada"
+    }   
+
+def actualizar_reserva(data: EditarReservaRequest):
+    reserva = obtener_reserva_por_id(data.id)
+    
+    if not reserva:
+        return {
+            "error": "No existe una reserva con ese ID"
+        }
+    if not data.fecha and not data.turno and not data.estado:
+        return {
+            "error": "No se enviaron campos para actualizar"
+        }
+        
+    editar_reserva(
+        data.id,
+        data.fecha,
+        data.turno,
+        data.estado
+    )
+    return {
+        "mensaje": "Reserva actualizada con exito",
+        "id": data.id
     }

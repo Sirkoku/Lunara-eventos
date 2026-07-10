@@ -7,7 +7,7 @@ from routes.disponibilidad import router as disponibilidad_router
 from models.reserva_models import ReservaRequest
 from routes.reservas import router as reservas_router
 from routes.clientes import router as clientes_router
-
+from services.ia import interpretar_mensaje
 
 
 app = FastAPI()
@@ -49,54 +49,6 @@ def health():
     return {"estado": "ok", "mensaje": "Servidor funcionando 🚀"}
 
 
-    
-class ConfirmarPagoRequest(BaseModel):
-        id: int
-
-@app.post("/confirmar_pago")
-def confirmar_pago(data: ConfirmarPagoRequest):
-    try:
-        conexion = get_conexion()
-        cursor = conexion.cursor()
-
-        # Verificar que la reserva existe y está en senado
-        cursor.execute("""
-            SELECT id, estado FROM public.reservas
-            WHERE id = %s
-        """, (data.id,))
-
-        resultado = cursor.fetchone()
-
-        if not resultado:
-            cursor.close()
-            conexion.close()
-            return {"error": "No existe una reserva con ese ID"}
-
-        if resultado[1] != "senado":
-            cursor.close()
-            conexion.close()
-            return {"error": f"La reserva no está en estado senado, está en: {resultado[1]}"}
-
-        # Actualizar el estado a pagado
-        cursor.execute("""
-            UPDATE public.reservas
-            SET estado = 'pagado'
-            WHERE id = %s
-        """, (data.id,))
-
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-
-        return {
-            "mensaje": "Pago confirmado con exito",
-            "id": data.id,
-            "estado": "pagado"
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
-    
 
 class EditarReservaRequest(BaseModel):
     id: int
@@ -104,97 +56,7 @@ class EditarReservaRequest(BaseModel):
     turno: str = None
     estado: str = None
 
-@app.put("/editar_reserva")
-def editar_reserva(data: EditarReservaRequest):
-    try:
-        conexion = get_conexion()
-        cursor = conexion.cursor()
 
-        # Verificar que la reserva existe
-        cursor.execute("""
-            SELECT id FROM public.reservas
-            WHERE id = %s
-        """, (data.id,))
-
-        if not cursor.fetchone():
-            cursor.close()
-            conexion.close()
-            return {"error": "No existe una reserva con ese ID"}
-
-        # Armar los campos a actualizar dinámicamente
-        campos = []
-        valores = []
-
-        if data.fecha:
-            campos.append("fecha = %s")
-            valores.append(data.fecha)
-        if data.turno:
-            campos.append("turno = %s")
-            valores.append(data.turno)
-        if data.estado:
-            campos.append("estado = %s")
-            valores.append(data.estado)
-
-        if not campos:
-            cursor.close()
-            conexion.close()
-            return {"error": "No se enviaron campos para actualizar"}
-
-        valores.append(data.id)
-
-        cursor.execute(f"""
-            UPDATE public.reservas
-            SET {', '.join(campos)}
-            WHERE id = %s
-        """, valores)
-
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-
-        return {
-            "mensaje": "Reserva actualizada con exito",
-            "id": data.id
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
-@app.delete("/cancelar_reserva/{id}")
-def cancelar_reserva(id: int):
-    try:
-        conexion = get_conexion()
-        cursor = conexion.cursor()
-
-        # Verificar que la reserva existe
-        cursor.execute("""
-            SELECT id FROM public.reservas
-            WHERE id = %s
-        """, (id,))
-
-        if not cursor.fetchone():
-            cursor.close()
-            conexion.close()
-            return {"error": "No existe una reserva con ese ID"}
-
-        cursor.execute("""
-            DELETE FROM public.reservas
-            WHERE id = %s
-        """, (id,))
-
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-
-        return {"mensaje": f"Reserva {id} cancelada con exito"}
-
-    except Exception as e:
-        return {"error": str(e)}
-    
-    
-    
-from services.ia import interpretar_mensaje
 
 class MensajeRequest(BaseModel):
     mensaje: str
